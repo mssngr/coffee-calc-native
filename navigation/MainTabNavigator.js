@@ -1,39 +1,56 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Image, Platform } from 'react-native';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { Ionicons } from '@expo/vector-icons';
+
+import smallCoffee from '../assets/images/smallCoffee.png'
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import Measurements from '../screens/Measurements';
+import Instructions from '../screens/Instructions';
+import Settings from '../screens/Settings';
 
 export default TabNavigator(
   {
-    Home: {
-      screen: HomeScreen,
+    Measurements: {
+      screen: Measurements,
     },
-    Links: {
-      screen: LinksScreen,
+    Instructions: {
+      screen: Instructions,
     },
     Settings: {
-      screen: SettingsScreen,
+      screen: Settings,
     },
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
+        // let icon;
+        // switch (routeName) {
+        //   case 'Measurements':
+        //     icon = focused ? smallCoffee : smallCoffee
+        //     break;
+        //   case 'Instructions':
+        //     icon = focused ? smallCoffee : smallCoffee
+        //     break;
+        //   case 'Settings':
+        //     icon = focused ? smallCoffee : smallCoffee
+        //     break;
+        // }
+        // return (
+        //   <Image source={icon} style={{height: 28}} resizeMode="contain" />
+        // );
         let iconName;
         switch (routeName) {
-          case 'Home':
+          case 'Measurements':
             iconName =
               Platform.OS === 'ios'
                 ? `ios-information-circle${focused ? '' : '-outline'}`
                 : 'md-information-circle';
             break;
-          case 'Links':
+          case 'Instructions':
             iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
             break;
           case 'Settings':
@@ -44,12 +61,18 @@ export default TabNavigator(
           <Ionicons
             name={iconName}
             size={28}
-            style={{ marginBottom: -3 }}
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         );
       },
     }),
+    tabBarOptions: {
+      inactiveTintColor: Colors.accentColor,
+      inactiveBackgroundColor: Colors.tintColor,
+      activeTintColor: Colors.tintColor,
+      activeBackgroundColor: Colors.accentColor,
+      showLabel: false,
+    },
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     animationEnabled: false,
