@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import {
   Image,
   Platform,
@@ -8,37 +9,32 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 import Swiper from 'react-native-swiper';
+
+import Selectors from '../state/selectors'
 
 import smallCoffee from '../assets/images/smallCoffee.png'
 import mediumCoffee from '../assets/images/mediumCoffee.png'
 import largeCoffee from '../assets/images/largeCoffee.png'
 
-import { MonoText } from '../components/StyledText';
 import Colors from '../constants/Colors';
 
-const cupSizes = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-}
-const servings = 1
-const gramsConversion = 28.34952
-const ratio = 16
-const getBeans = size => Math.round((servings * size * gramsConversion) / ratio)
-const getBloom = size => Math.round(((servings * size * gramsConversion) / ratio) * 2)
-const getWater = size => Math.round(servings * size * gramsConversion)
-
-export default class Measurements extends React.Component {
+class Measurements extends React.Component {
   static navigationOptions = {
     title: 'Measurements',
     header: null,
   };
 
+  state = {
+    isFlipped: false,
+  }
+
   render() {
+    const {beans, bloom, water} = this.props
+    const {isFlipped} = this.state
     return (
       <Swiper
+        display-if={!isFlipped}
         style={swiper.wrapper}
         showsButtons={false}
         activeDotColor={Colors.tintColor}
@@ -47,39 +43,39 @@ export default class Measurements extends React.Component {
           <Text style={swiper.text}>Small</Text>
           <Image style={swiper.image} source={smallCoffee} />
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBeans(cupSizes.sm)}g</Text> beans
+            <Text style={styles.strong}>{beans.sm}g</Text> beans
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBloom(cupSizes.sm)}g</Text> bloom
+            <Text style={styles.strong}>{bloom.sm}g</Text> bloom
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getWater(cupSizes.sm)}g</Text> water
+            <Text style={styles.strong}>{water.sm}g</Text> water
           </Text>
         </View>
         <View style={swiper.slide2}>
           <Text style={swiper.text}>Medium</Text>
           <Image style={swiper.image} source={mediumCoffee} />
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBeans(cupSizes.md)}g</Text> beans
+            <Text style={styles.strong}>{beans.md}g</Text> beans
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBloom(cupSizes.md)}g</Text> bloom
+            <Text style={styles.strong}>{bloom.md}g</Text> bloom
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getWater(cupSizes.md)}g</Text> water
+            <Text style={styles.strong}>{water.md}g</Text> water
           </Text>
         </View>
         <View style={swiper.slide3}>
           <Text style={swiper.text}>Large</Text>
           <Image style={swiper.image} source={largeCoffee} />
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBeans(cupSizes.lg)}g</Text> beans
+            <Text style={styles.strong}>{beans.lg}g</Text> beans
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getBloom(cupSizes.lg)}g</Text> bloom
+            <Text style={styles.strong}>{bloom.lg}g</Text> bloom
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.strong}>{getWater(cupSizes.lg)}g</Text> water
+            <Text style={styles.strong}>{water.lg}g</Text> water
           </Text>
         </View>
       </Swiper>
@@ -97,6 +93,12 @@ const styles = StyleSheet.create({
   strong: {
     ...text,
     fontWeight: '700',
+  },
+  flipButton: {
+    ...text,
+    position: 'absolute',
+    top: '10%',
+    right: 0,
   },
 });
 
@@ -122,3 +124,11 @@ const swiper = StyleSheet.create({
     fontWeight: 'bold',
   }
 })
+
+const mapState = state => ({
+  beans: Selectors.getBeans(state),
+  bloom: Selectors.getBloom(state),
+  water: Selectors.getWater(state),
+})
+
+export default connect(mapState)(Measurements)

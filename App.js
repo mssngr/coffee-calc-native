@@ -1,8 +1,15 @@
 import React from 'react';
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
+import reducer from './state/reducers'
+
+const store = createStore(
+  reducer
+)
 
 export default class App extends React.Component {
   state = {
@@ -23,7 +30,9 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          <RootNavigation />
+          <Provider store={store}>
+            <RootNavigation />
+          </Provider>
         </View>
       );
     }
@@ -59,7 +68,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#c3c3c3',
   },
   statusBarUnderlay: {
     height: 24,
