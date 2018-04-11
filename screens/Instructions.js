@@ -1,14 +1,17 @@
 import React from 'react'
-import { ScrollView, View } from 'react-native'
-import {connect} from 'react-redux'
-import Swiper from 'react-native-swiper'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { toLower } from 'lodash'
 
+import { convertNumToText } from '../utils/functions'
 import Colors from '../constants/Colors'
 import Selectors from '../state/selectors'
-import {Page, Header} from './Measurements'
+import { LargeText, Text, StrongText } from '../components/styled'
+import Screen from '../components/Screen'
 
-const SlideContainer = styled.View`
+/* STYLES */
+const Container = styled.View`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -16,58 +19,61 @@ const SlideContainer = styled.View`
   align-items: center;
 `
 
-const SlideTitle = styled.Text`
-  color: #fff;
-  fontSize: 30px;
-  fontWeight: 700;
+const MeasurementsText = Text.extend`
+  color: ${Colors.darkGray};
 `
 
-const SlideImage = styled.Image`
+const Image = styled.Image`
   margin-vertical: 15px;
   height: 150px;
 `
 
-const SlideText = styled.Text`
-  color: black;
-  font-size: 20px;
-`
+/* PRESENTATION/LOGIC */
+class Instructions extends React.Component {
+  static navigationOptions = {
+    title: 'Instructions',
+    header: null,
+  }
 
-const StrongText = SlideText.extend`
-  font-weight: 700;
-`
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+    currentSize: PropTypes.object.isRequired,
+    currentMethod: PropTypes.object.isRequired,
+    currentServings: PropTypes.number.isRequired,
+    beans: PropTypes.number.isRequired,
+    bloom: PropTypes.number.isRequired,
+    water: PropTypes.number.isRequired,
+  }
 
-const BrewButton = styled.TouchableHighlight`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  height: 50px;
-  margin-top: 15px;
-  background-color: black;
-`
-
-const BrewText = StrongText.extend`
-  color: white;
-`
-
-class Slide extends React.Component {
   render() {
-    const {currentSize, beans, bloom, water} = this.props
+    const {
+      navigation,
+      currentSize,
+      currentMethod,
+      currentServings,
+      beans,
+      bloom,
+      water,
+    } = this.props
     return (
-      <SlideContainer>
-        <SlideTitle>{currentSize.name}</SlideTitle>
-        <SlideImage source={currentSize.image} resizeMode="contain" />
-        <SlideText>
-          <StrongText>{beans[currentSize.id]}g</StrongText> beans
-        </SlideText>
-        <SlideText>
-          <StrongText>{bloom[currentSize.id]}g</StrongText> bloom
-        </SlideText>
-        <SlideText>
-          <StrongText>{water[currentSize.id]}g</StrongText> water
-        </SlideText>
-        <BrewButton onPress={this.handlePress}><BrewText>Brew this cup</BrewText></BrewButton>
-      </SlideContainer>
+      <Screen header="Brew your cup!" navigation={navigation} hasBack>
+        <Container>
+          <LargeText>
+            {currentSize.name} {toLower(currentMethod.name)} for{' '}
+            {convertNumToText(currentServings)}.
+          </LargeText>
+          <Image source={currentSize.image} resizeMode="contain" />
+          <MeasurementsText>
+            <StrongText>{beans}g</StrongText> beans
+          </MeasurementsText>
+          <MeasurementsText>
+            <StrongText>{bloom}g</StrongText> bloom
+          </MeasurementsText>
+          <MeasurementsText>
+            <StrongText>{water}g</StrongText> water
+          </MeasurementsText>
+        </Container>
+      </Screen>
     )
   }
 }
@@ -77,27 +83,8 @@ const mapState = state => ({
   bloom: Selectors.getBloom(state),
   water: Selectors.getWater(state),
   currentSize: Selectors.getCurrentSize(state),
+  currentServings: Selectors.getCurrentServings(state),
+  currentMethod: Selectors.getCurrentMethod(state),
 })
 
-const MeasurementsSlide = connect(mapState)(Slide)
-
-class Instructions extends React.Component {
-  static navigationOptions = {
-    title: 'Instructions',
-    header: null,
-  }
-
-  render() {
-    const {sizes, currentSize} = this.props
-    return (
-      <Page>
-        <Header>Brew your cup</Header>
-        <Swiper activeDotColor={Colors.tintColor}>
-          <MeasurementsSlide />
-        </Swiper>
-      </Page>
-    )
-  }
-}
-
-export default Instructions
+export default connect(mapState)(Instructions)

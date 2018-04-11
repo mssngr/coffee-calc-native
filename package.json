@@ -2,7 +2,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
+    "postinstall": "remotedev-debugger"
   },
   "jest": {
     "preset": "jest-expo"
@@ -11,6 +12,8 @@
     "@expo/samples": "2.1.1",
     "expo": "^25.0.0",
     "keymirror": "^0.1.1",
+    "lodash": "^4.17.5",
+    "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-swiper": "^1.5.13",
@@ -28,14 +31,17 @@
     "babel-polyfill": "^6.26.0",
     "eslint": "^4.18.2",
     "eslint-config-expo": "^6.0.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-config-standard-react": "^6.0.0",
-    "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-plugin-brackets": "^0.1.3",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jest-expo": "^25.0.0"
+    "jest-expo": "^25.0.0",
+    "prettier": "1.11.1",
+    "remote-redux-devtools": "^0.5.12",
+    "remotedev-rn-debugger": "^0.8.3"
   }
 }

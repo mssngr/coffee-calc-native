@@ -1,27 +1,27 @@
-import React from 'react';
-import { Image, Platform } from 'react-native';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import React from 'react'
+import { Image, Platform } from 'react-native'
+import { TabNavigator, TabBarBottom } from 'react-navigation'
 
-import scaleWhite from '../assets/images/scaleWhite.png'
-import scaleBlack from '../assets/images/scaleBlack.png'
-import kettleWhite from '../assets/images/kettleWhite.png'
-import kettleBlack from '../assets/images/kettleBlack.png'
-import settingsWhite from '../assets/images/settingsWhite.png'
-import settingsBlack from '../assets/images/settingsBlack.png'
+import cupLight from '../assets/images/cup-white.png'
+import cupDark from '../assets/images/cup-darkGray.png'
+import coffeeBagLight from '../assets/images/coffeeBag-white.png'
+import coffeeBagDark from '../assets/images/coffeeBag-darkGray.png'
+import gearLight from '../assets/images/gear-white.png'
+import gearDark from '../assets/images/gear-darkGray.png'
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/Colors'
 
-import Measurements from '../screens/Measurements';
-import Instructions from '../screens/Instructions';
-import Settings from '../screens/Settings';
+import Brew from '../screens/Brew'
+import Cafes from '../screens/Cafes'
+import Settings from '../screens/Settings'
 
 export default TabNavigator(
   {
-    Measurements: {
-      screen: Measurements,
+    Brew: {
+      screen: Brew,
     },
-    Instructions: {
-      screen: Instructions,
+    Cafes: {
+      screen: Cafes,
     },
     Settings: {
       screen: Settings,
@@ -30,22 +30,26 @@ export default TabNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
-        const { routeName } = navigation.state;
-        let icon;
+        const { routeName } = navigation.state
+        let icon
         switch (routeName) {
-          case 'Measurements':
-            icon = focused ? scaleBlack : scaleWhite
-            break;
-          case 'Instructions':
-          icon = focused ? kettleBlack : kettleWhite
-            break;
+          case 'Brew':
+            icon = focused ? cupDark : cupLight
+            break
+          case 'Cafes':
+            icon = focused ? coffeeBagDark : coffeeBagLight
+            break
           case 'Settings':
-            icon = focused ? settingsBlack : settingsWhite
-            break;
+            icon = focused ? gearDark : gearLight
+            break
         }
         return (
-          <Image source={icon} style={{height: 30, maxWidth: 40}} resizeMode="contain" />
-        );
+          <Image
+            source={icon}
+            style={{ height: 35, maxWidth: 45 }}
+            resizeMode="contain"
+          />
+        )
       },
     }),
     tabBarOptions: {
@@ -60,4 +64,4 @@ export default TabNavigator(
     animationEnabled: false,
     swipeEnabled: false,
   }
-);
+)

@@ -1,61 +1,25 @@
 {
-  "env": {
-    "es6": true,
-    "node": true
-  },
   "parser": "babel-eslint",
   "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
       "jsx": true
-    },
-    "sourceType": "module"
-  },
-  "settings": {
-    "import/resolver": {
-      "babel-module": {}
     }
   },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
   "plugins": [
-    "brackets",
-    "import",
-    "node",
-    "react"
+    "flowtype"
   ],
   "extends": [
     "standard",
     "standard-react",
     "expo/native",
-    "plugin:import/errors",
-    "plugin:import/warnings"
-  ],
-  "rules": {
-    "comma-dangle": ["error", "always-multiline"],
-    "jsx-quotes": ["error", "prefer-double"],
-    "max-len": [
-      "error",
-      {
-      "code": 100,
-      "ignoreRegExpLiterals": true,
-      "ignoreStrings": true,
-      "ignoreTemplateLiterals": true,
-      "ignoreTrailingComments": true,
-      "ignoreUrls": true,
-      "tabWidth": 2
-      }
-    ],
-    "multiline-ternary": ["error", "always-multiline"],
-    "no-console": ["warn"],
-    "no-unused-vars": ["warn"],
-    "object-curly-spacing": ["error", "never"],
-    "object-property-newline": ["error", {"allowAllPropertiesOnSameLine": true}],
-    "operator-linebreak": ["error", "before"],
-    "quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
-    "semi": ["error", "never"],
-    "brackets/array-bracket-newline": ["error"],
-    "brackets/call-parens-newline": ["error"],
-    "brackets/conditional-parens-newline": ["error"],
-    "brackets/func-parens-newline": ["error"],
-    "brackets/object-curly-newline": ["error"]
-  }
+    "prettier"
+  ]
 }

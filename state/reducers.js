@@ -1,34 +1,48 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
-import {types as ActionTypes} from './actions'
+import { types as ActionTypes } from './actions'
+
 import smallCoffee from '../assets/images/smallCoffee.png'
 import mediumCoffee from '../assets/images/mediumCoffee.png'
 import largeCoffee from '../assets/images/largeCoffee.png'
+import chemex from '../assets/images/chemex.png'
+import frenchPress from '../assets/images/frenchPress.png'
 
 const settingsInitState = {
   sizes: {
     sm: {
       id: 'sm',
-      image: smallCoffee,
       name: 'Small',
       ounces: 8,
+      image: smallCoffee,
     },
     md: {
       id: 'md',
-      image: mediumCoffee,
       name: 'Medium',
       ounces: 12,
+      image: mediumCoffee,
     },
     lg: {
       id: 'lg',
-      image: largeCoffee,
       name: 'Large',
       ounces: 16,
+      image: largeCoffee,
     },
   },
-  servings: 1,
-  pourRatio: 16,
-  submersionRatio: 16,
+  methods: {
+    pourOver: {
+      id: 'pourOver',
+      name: 'Pour Over',
+      ratio: 16,
+      image: chemex,
+    },
+    frenchPress: {
+      id: 'frenchPress',
+      name: 'French Press',
+      ratio: 15,
+      image: frenchPress,
+    },
+  },
 }
 
 const settings = (state = settingsInitState, action) => {
@@ -39,17 +53,24 @@ const settings = (state = settingsInitState, action) => {
 }
 
 const currentInitState = {
-  size: 'sm',
   servings: 1,
+  sizeId: settingsInitState.sizes.sm.id,
+  methodId: settingsInitState.methods.pourOver.id,
 }
 
 const current = (state = currentInitState, action) => {
   switch (action.type) {
     case ActionTypes.CHANGE_SIZE:
-      return {size: action.payload.newSize || state.size}
+      return { ...state, sizeId: action.payload.newSize || state.size }
+
+    case ActionTypes.CHANGE_METHOD:
+      return { ...state, methodId: action.payload.newMethod || state.method }
 
     case ActionTypes.CHANGE_SERVINGS:
-      return {servings: action.payload.newServings || state.servings}
+      return {
+        ...state,
+        servings: action.payload.newServings || state.servings,
+      }
 
     default:
       return state

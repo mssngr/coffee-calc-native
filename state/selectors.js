@@ -1,52 +1,54 @@
-import {get} from 'lodash'
+import { get } from 'lodash'
 import Conversions from '../constants/Conversions'
 
-export const getBeans = state => {
-  const servings = get(state, 'settings.servings')
-  const ratio = get(state, 'settings.pourRatio')
-  const sizes = get(state, 'settings.sizes')
-  return {
-    sm: Math.round((servings * sizes.sm.ounces * Conversions.gramsToOunces) / ratio),
-    md: Math.round((servings * sizes.md.ounces * Conversions.gramsToOunces) / ratio),
-    lg: Math.round((servings * sizes.lg.ounces * Conversions.gramsToOunces) / ratio),
-  }
-}
-
-export const getBloom = state => {
-  const servings = get(state, 'settings.servings')
-  const ratio = get(state, 'settings.pourRatio')
-  const sizes = get(state, 'settings.sizes')
-  return {
-    sm: Math.round(((servings * sizes.sm.ounces * Conversions.gramsToOunces) / ratio) * 2),
-    md: Math.round(((servings * sizes.md.ounces * Conversions.gramsToOunces) / ratio) * 2),
-    lg: Math.round(((servings * sizes.lg.ounces * Conversions.gramsToOunces) / ratio) * 2),
-  }
-}
-
-export const getWater = state => {
-  const servings = get(state, 'settings.servings')
-  const sizes = get(state, 'settings.sizes')
-  return {
-    sm: Math.round(servings * sizes.sm.ounces * Conversions.gramsToOunces),
-    md: Math.round(servings * sizes.md.ounces * Conversions.gramsToOunces),
-    lg: Math.round(servings * sizes.lg.ounces * Conversions.gramsToOunces),
-  }
-}
-
-export const getServings = state => get(state, 'current.servings', 1)
 export const getSizes = state => get(state, 'settings.sizes')
+export const getMethods = state => get(state, 'settings.methods')
+export const getCurrentServings = state => get(state, 'current.servings', 1)
 
 export const getCurrentSize = state => {
   const sizes = getSizes(state)
-  const currentSize = get(state, 'current.size', 'sm')
+  const currentSize = get(state, 'current.sizeId', 'sm')
   return sizes[currentSize]
+}
+export const getCurrentMethod = state => {
+  const methods = getMethods(state)
+  const currentMethod = get(state, 'current.methodId', 'pourOver')
+  return methods[currentMethod]
+}
+
+export const getCurrentRatio = state => getCurrentMethod(state).ratio
+
+export const getBeans = state => {
+  const servings = getCurrentServings(state)
+  const ratio = getCurrentRatio(state)
+  const size = getCurrentSize(state)
+  const ounces = get(size, 'ounces', 0)
+  return Math.round(servings * ounces * Conversions.gramsToOunces / ratio)
+}
+
+export const getBloom = state => {
+  const servings = getCurrentServings(state)
+  const ratio = getCurrentRatio(state)
+  const size = getCurrentSize(state)
+  const ounces = get(size, 'ounces', 0)
+  return Math.round(servings * ounces * Conversions.gramsToOunces / ratio * 2)
+}
+
+export const getWater = state => {
+  const servings = getCurrentServings(state)
+  const size = getCurrentSize(state)
+  const ounces = get(size, 'ounces', 0)
+  return Math.round(servings * ounces * Conversions.gramsToOunces)
 }
 
 export default {
+  getSizes,
+  getMethods,
+  getCurrentServings,
+  getCurrentSize,
+  getCurrentMethod,
+  getCurrentRatio,
   getBeans,
   getBloom,
   getWater,
-  getServings,
-  getSizes,
-  getCurrentSize,
 }
