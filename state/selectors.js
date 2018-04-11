@@ -4,37 +4,49 @@ import Conversions from '../constants/Conversions'
 export const getBeans = state => {
   const servings = get(state, 'settings.servings')
   const ratio = get(state, 'settings.pourRatio')
-  const cupSizes = get(state, 'settings.cupSizes')
+  const sizes = get(state, 'settings.sizes')
   return {
-    small: Math.round((servings * cupSizes.sm * Conversions.gramsToOunces) / ratio),
-    medium: Math.round((servings * cupSizes.md * Conversions.gramsToOunces) / ratio),
-    large: Math.round((servings * cupSizes.lg * Conversions.gramsToOunces) / ratio),
+    sm: Math.round((servings * sizes.sm.ounces * Conversions.gramsToOunces) / ratio),
+    md: Math.round((servings * sizes.md.ounces * Conversions.gramsToOunces) / ratio),
+    lg: Math.round((servings * sizes.lg.ounces * Conversions.gramsToOunces) / ratio),
   }
 }
 
 export const getBloom = state => {
   const servings = get(state, 'settings.servings')
   const ratio = get(state, 'settings.pourRatio')
-  const cupSizes = get(state, 'settings.cupSizes')
+  const sizes = get(state, 'settings.sizes')
   return {
-    small: Math.round(((servings * cupSizes.sm * Conversions.gramsToOunces) / ratio) * 2),
-    medium: Math.round(((servings * cupSizes.md * Conversions.gramsToOunces) / ratio) * 2),
-    large: Math.round(((servings * cupSizes.lg * Conversions.gramsToOunces) / ratio) * 2),
+    sm: Math.round(((servings * sizes.sm.ounces * Conversions.gramsToOunces) / ratio) * 2),
+    md: Math.round(((servings * sizes.md.ounces * Conversions.gramsToOunces) / ratio) * 2),
+    lg: Math.round(((servings * sizes.lg.ounces * Conversions.gramsToOunces) / ratio) * 2),
   }
 }
 
 export const getWater = state => {
   const servings = get(state, 'settings.servings')
-  const cupSizes = get(state, 'settings.cupSizes')
+  const sizes = get(state, 'settings.sizes')
   return {
-    small: Math.round(servings * cupSizes.sm * Conversions.gramsToOunces),
-    medium: Math.round(servings * cupSizes.md * Conversions.gramsToOunces),
-    large: Math.round(servings * cupSizes.lg * Conversions.gramsToOunces),
+    sm: Math.round(servings * sizes.sm.ounces * Conversions.gramsToOunces),
+    md: Math.round(servings * sizes.md.ounces * Conversions.gramsToOunces),
+    lg: Math.round(servings * sizes.lg.ounces * Conversions.gramsToOunces),
   }
+}
+
+export const getServings = state => get(state, 'current.servings', 1)
+export const getSizes = state => get(state, 'settings.sizes')
+
+export const getCurrentSize = state => {
+  const sizes = getSizes(state)
+  const currentSize = get(state, 'current.size', 'sm')
+  return sizes[currentSize]
 }
 
 export default {
   getBeans,
   getBloom,
   getWater,
+  getServings,
+  getSizes,
+  getCurrentSize,
 }

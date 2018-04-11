@@ -1,11 +1,13 @@
 import React from 'react';
 import { Image, Platform } from 'react-native';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
-import { Ionicons } from '@expo/vector-icons';
 
-import smallCoffee from '../assets/images/smallCoffee.png'
+import scaleWhite from '../assets/images/scaleWhite.png'
+import scaleBlack from '../assets/images/scaleBlack.png'
 import kettleWhite from '../assets/images/kettleWhite.png'
 import kettleBlack from '../assets/images/kettleBlack.png'
+import settingsWhite from '../assets/images/settingsWhite.png'
+import settingsBlack from '../assets/images/settingsBlack.png'
 
 import Colors from '../constants/Colors';
 
@@ -32,40 +34,18 @@ export default TabNavigator(
         let icon;
         switch (routeName) {
           case 'Measurements':
-            icon = focused ? kettleBlack : kettleWhite
+            icon = focused ? scaleBlack : scaleWhite
             break;
           case 'Instructions':
-            icon = focused ? smallCoffee : smallCoffee
+          icon = focused ? kettleBlack : kettleWhite
             break;
           case 'Settings':
-            icon = focused ? smallCoffee : smallCoffee
+            icon = focused ? settingsBlack : settingsWhite
             break;
         }
         return (
-          <Image source={icon} style={{height: 30}} resizeMode="contain" />
+          <Image source={icon} style={{height: 30, maxWidth: 40}} resizeMode="contain" />
         );
-        // let iconName;
-        // switch (routeName) {
-        //   case 'Measurements':
-        //     iconName =
-        //       Platform.OS === 'ios'
-        //         ? `ios-information-circle${focused ? '' : '-outline'}`
-        //         : 'md-information-circle';
-        //     break;
-        //   case 'Instructions':
-        //     iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
-        //     break;
-        //   case 'Settings':
-        //     iconName =
-        //       Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
-        // }
-        // return (
-        //   <Ionicons
-        //     name={iconName}
-        //     size={28}
-        //     color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-        //   />
-        // );
       },
     }),
     tabBarOptions: {
