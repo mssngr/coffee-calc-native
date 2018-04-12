@@ -1,24 +1,24 @@
 import React from 'react'
-import { Image, Platform } from 'react-native'
+import { Image } from 'react-native'
 import { TabNavigator, TabBarBottom } from 'react-navigation'
 
-import cupLight from '../assets/images/cup-white.png'
-import cupDark from '../assets/images/cup-darkGray.png'
-import coffeeBagLight from '../assets/images/coffeeBag-white.png'
-import coffeeBagDark from '../assets/images/coffeeBag-darkGray.png'
+import beansLight from '../assets/images/beans-white.png'
+import beansDark from '../assets/images/beans.png'
+import coffeeShopLight from '../assets/images/coffeeShop-white.png'
+import coffeeShopDark from '../assets/images/coffeeShop.png'
 import gearLight from '../assets/images/gear-white.png'
 import gearDark from '../assets/images/gear-darkGray.png'
 
 import Colors from '../constants/Colors'
 
-import Brew from '../screens/Brew'
+import BrewNavigation from './BrewNavigation'
 import Cafes from '../screens/Cafes'
 import Settings from '../screens/Settings'
 
 export default TabNavigator(
   {
     Brew: {
-      screen: Brew,
+      screen: BrewNavigation,
     },
     Cafes: {
       screen: Cafes,
@@ -29,15 +29,16 @@ export default TabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
+      /* eslint-disable react/prop-types */
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state
         let icon
         switch (routeName) {
           case 'Brew':
-            icon = focused ? cupDark : cupLight
+            icon = focused ? beansDark : beansLight
             break
           case 'Cafes':
-            icon = focused ? coffeeBagDark : coffeeBagLight
+            icon = focused ? coffeeShopDark : coffeeShopLight
             break
           case 'Settings':
             icon = focused ? gearDark : gearLight
@@ -51,6 +52,7 @@ export default TabNavigator(
           />
         )
       },
+      /* eslint-enable react/prop-types */
     }),
     tabBarOptions: {
       inactiveTintColor: Colors.accentColor,

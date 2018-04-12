@@ -32,7 +32,7 @@ const BackButton = styled.TouchableOpacity`
   flex-wrap: nowrap;
   align-items: center;
   position: absolute;
-  top: 5;
+  top: 10;
   left: 0;
 `
 

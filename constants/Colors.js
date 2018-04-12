@@ -4,7 +4,7 @@ const gray = 'hsl(0, 0%, 50%)'
 const darkGray = '#3c3c3c'
 const black = '#000'
 
-const tintColor = darkGray
+const tintColor = black
 const accentColor = white
 
 export default {

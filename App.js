@@ -12,9 +12,11 @@ import {
 import { AppLoading, Asset, Font } from 'expo'
 import { Ionicons } from '@expo/vector-icons'
 import devToolsEnhancer from 'remote-redux-devtools'
+
 import RootNavigation from './navigation/RootNavigation'
 import reducer from './state/reducers'
 
+// Create the redux store with the devtools enhancer
 const store = createStore(reducer, devToolsEnhancer())
 
 export default class App extends React.Component {
@@ -53,8 +55,29 @@ export default class App extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        require('./assets/images/caret-darkGray.png'),
+        require('./assets/images/caret-gray.png'),
+        require('./assets/images/caret-white.png'),
+        require('./assets/images/caret.png'),
+        require('./assets/images/coffeeBag-darkGray.png'),
+        require('./assets/images/coffeeBag-white.png'),
+        require('./assets/images/cup-darkGray.png'),
+        require('./assets/images/cup-white.png'),
+        require('./assets/images/figure1.png'),
+        require('./assets/images/figure2.png'),
+        require('./assets/images/figure3.png'),
+        require('./assets/images/figure4.png'),
+        require('./assets/images/frenchPress.png'),
+        require('./assets/images/gear-darkGray.png'),
+        require('./assets/images/gear-white.png'),
+        require('./assets/images/gear.png'),
+        require('./assets/images/largeCoffee.png'),
+        require('./assets/images/mediumCoffee.png'),
+        require('./assets/images/minus.png'),
+        require('./assets/images/plus.png'),
+        require('./assets/images/settingsBlack.png'),
+        require('./assets/images/settingsWhite.png'),
+        require('./assets/images/smallCoffee.png'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
