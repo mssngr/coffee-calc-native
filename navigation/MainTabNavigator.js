@@ -7,7 +7,7 @@ import beansDark from '../assets/images/beans.png'
 import coffeeShopLight from '../assets/images/coffeeShop-white.png'
 import coffeeShopDark from '../assets/images/coffeeShop.png'
 import gearLight from '../assets/images/gear-white.png'
-import gearDark from '../assets/images/gear-darkGray.png'
+import gearDark from '../assets/images/gear.png'
 
 import Colors from '../constants/Colors'
 

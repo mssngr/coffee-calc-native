@@ -10,6 +10,10 @@ export const LargeText = Text.extend`
   font-size: 25px;
 `
 
+export const SmallText = Text.extend`
+  font-size: 16px;
+`
+
 export const StrongText = Text.extend`
   font-weight: 700;
 `
