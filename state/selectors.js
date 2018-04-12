@@ -1,6 +1,11 @@
 import { get } from 'lodash'
 import Conversions from '../constants/Conversions'
 
+export const getUserId = state => get(state, 'user.id')
+export const getFavoriteCafeIds = state =>
+  get(state, 'user.favoriteCafeIds', [])
+export const getFavoriteRecipes = state =>
+  get(state, 'user.favoriteRecipes', [])
 export const getSizes = state => get(state, 'settings.sizes')
 export const getMethods = state => get(state, 'settings.methods')
 export const getCurrentServings = state => get(state, 'current.servings', 1)
@@ -42,6 +47,9 @@ export const getWater = state => {
 }
 
 export default {
+  getUserId,
+  getFavoriteCafeIds,
+  getFavoriteRecipes,
   getSizes,
   getMethods,
   getCurrentServings,

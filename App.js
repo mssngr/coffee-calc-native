@@ -10,11 +10,24 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { AppLoading, Asset, Font } from 'expo'
-import { Ionicons } from '@expo/vector-icons'
 import devToolsEnhancer from 'remote-redux-devtools'
+import { GraphQLClient } from 'graphql-request'
+import {
+  GRAPHCOOL_API_SIMPLE_ENDPOINT,
+  GRAPHCOOL_AUTH_TOKEN,
+} from 'react-native-dotenv'
 
-import RootNavigation from './navigation/RootNavigation'
-import reducer from './state/reducers'
+import RootNavigation from 'navigation/RootNavigation'
+import reducer from 'state/reducers'
+
+// Initialize the GraphQL Client
+const graphcoolClient = new GraphQLClient(GRAPHCOOL_API_SIMPLE_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${GRAPHCOOL_AUTH_TOKEN}`,
+  },
+})
+
+export const graphcoolRequest = req => graphcoolClient.request(req)
 
 // Create the redux store with the devtools enhancer
 const store = createStore(reducer, devToolsEnhancer())
@@ -61,10 +74,9 @@ export default class App extends React.Component {
         require('./assets/images/caret-gray.png'),
         require('./assets/images/caret-white.png'),
         require('./assets/images/caret.png'),
-        require('./assets/images/coffeeCup.png'),
-        require('./assets/images/coffeeCup-white.png'),
         require('./assets/images/coffeeShop.png'),
         require('./assets/images/coffeeShop-white.png'),
+        require('./assets/images/close.png'),
         require('./assets/images/chemex.png'),
         require('./assets/images/frenchPress.png'),
         require('./assets/images/figure1.png'),
@@ -73,18 +85,20 @@ export default class App extends React.Component {
         require('./assets/images/figure4.png'),
         require('./assets/images/gear.png'),
         require('./assets/images/gear-white.png'),
+        require('./assets/images/refresh.png'),
+        require('./assets/images/refresh-white.png'),
+        require('./assets/images/mapMarker.png'),
+        require('./assets/images/mapMarker-white.png'),
         require('./assets/images/minus.png'),
         require('./assets/images/plus.png'),
-        require('./assets/images/smallCoffee.png'),
-        require('./assets/images/mediumCoffee.png'),
-        require('./assets/images/largeCoffee.png'),
+        require('./assets/images/coffee-sm.png'),
+        require('./assets/images/coffee-md.png'),
+        require('./assets/images/coffee-lg.png'),
       ]),
       Font.loadAsync({
-        // This is the font that we are using for our tab bar
-        ...Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'gamja-flower': require('./assets/fonts/GamjaFlower-Regular.ttf'),
+        'gaegu-bold': require('./assets/fonts/Gaegu-Bold.ttf'),
+        'caveat-bold': require('./assets/fonts/Caveat-Bold.ttf'),
       }),
     ])
   }

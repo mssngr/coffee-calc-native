@@ -1,21 +1,42 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { get } from 'lodash'
 
-import figure1 from '../assets/images/figure1.png'
-import figure2 from '../assets/images/figure2.png'
-import figure3 from '../assets/images/figure3.png'
-import figure4 from '../assets/images/figure4.png'
-import plus from '../assets/images/plus.png'
-import minus from '../assets/images/minus.png'
+import figure1 from 'assets/images/figure1.png'
+import figure2 from 'assets/images/figure2.png'
+import figure3 from 'assets/images/figure3.png'
+import figure4 from 'assets/images/figure4.png'
+import plus from 'assets/images/plus.png'
+import minus from 'assets/images/minus.png'
 
-import { convertNumToText } from '../utils/functions'
-import Selectors from '../state/selectors'
-import Actions from '../state/actions'
-import { HeaderAlt } from '../components/styled'
-import Screen from '../components/Screen'
+import { convertNumToText } from 'utils/functions'
+import Selectors from 'state/selectors'
+import Actions from 'state/actions'
+import { HeaderAlt } from 'components/styled'
+import Screen from 'components/Screen'
+import { graphcoolRequest } from 'App'
+
+/* QUERIES */
+const findUser = userId => `{
+  User(id: "${userId}") {
+    id
+    favoriteCafeIds
+    favoriteRecipes
+  }
+}`
+
+const addUser = `mutation {
+  createUser(
+    favoriteCafeIds: [],
+    favoriteRecipes: []
+  ) {
+    id
+    favoriteCafeIds
+    favoriteRecipes
+  }
+}`
 
 /* STYLES */
 const FlexContainer = styled.View`
@@ -42,6 +63,14 @@ const FigureImage = styled.Image`
   height: 120px;
 `
 
+const Button = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 100px;
+`
+
 const OperatorImage = styled.Image`
   width: 30px;
   height: 30px;
@@ -58,6 +87,40 @@ class Servings extends React.Component {
     navigation: PropTypes.object.isRequired,
     servings: PropTypes.number.isRequired,
     changeServings: PropTypes.func.isRequired,
+    userId: PropTypes.string,
+    updateUser: PropTypes.func.isRequired,
+  }
+
+  componentDidMount() {
+    console.log('App mounted, first screen loaded.')
+    const { userId, updateUser } = this.props
+    // Try to fetch the user from the server, if there is one
+    graphcoolRequest(findUser(userId))
+      .then(response => {
+        const foundUser = get(response, 'User')
+        if (foundUser) {
+          console.log(`Found user ${foundUser.id}.`)
+          // If a user was found, update redux with the user data
+          updateUser(foundUser)
+        } else {
+          // If there is no user, create one
+          graphcoolRequest(addUser)
+            .then(response => {
+              const newUser = get(response, 'createUser')
+              if (newUser) {
+                console.log(`Created user ${newUser.id}.`)
+                // Then update redux with the user data
+                updateUser(newUser)
+              }
+            })
+            .catch(err =>
+              console.log(new Error(`Could not create user. ${err}`))
+            )
+        }
+      })
+      .catch(err =>
+        console.log(new Error(`Could not complete user lookup. ${err}`))
+      )
   }
 
   handleDecrementServings = () => {
@@ -69,9 +132,7 @@ class Servings extends React.Component {
 
   handleIncrementServings = () => {
     const { servings, changeServings } = this.props
-    console.log(servings, changeServings)
     if (servings < 4) {
-      console.log('less than 4')
       changeServings(servings + 1)
     }
   }
@@ -85,25 +146,25 @@ class Servings extends React.Component {
     return (
       <Screen
         header="Choose your servings"
-        otherButton={{ screen: 'Instructions', text: 'Skip' }}
+        otherButton={{ screen: 'Cafes', text: 'Feeling Lazy' }}
         next={{ screen: 'Size', text: 'Continue' }}
         navigation={navigation}
       >
         <FlexContainer>
           <HeaderAlt>Coffee for {convertNumToText(servings)}</HeaderAlt>
           <IllustrationContainer>
-            <TouchableOpacity onPress={this.handleDecrementServings}>
+            <Button onPress={this.handleDecrementServings}>
               <OperatorImage source={minus} />
-            </TouchableOpacity>
+            </Button>
             <FiguresContainer>
               <FigureImage display-if={servings >= 1} source={figure1} />
               <FigureImage display-if={servings >= 2} source={figure2} />
               <FigureImage display-if={servings >= 3} source={figure3} />
               <FigureImage display-if={servings >= 4} source={figure4} />
             </FiguresContainer>
-            <TouchableOpacity onPress={this.handleIncrementServings}>
+            <Button onPress={this.handleIncrementServings}>
               <OperatorImage source={plus} />
-            </TouchableOpacity>
+            </Button>
           </IllustrationContainer>
         </FlexContainer>
       </Screen>
@@ -112,11 +173,13 @@ class Servings extends React.Component {
 }
 
 const mapState = state => ({
+  userId: Selectors.getUserId(state),
   servings: Selectors.getCurrentServings(state),
 })
 
 const mapActions = {
   changeServings: Actions.changeServings,
+  updateUser: Actions.updateUser,
 }
 
 export default connect(mapState, mapActions)(Servings)

@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 
 import { types as ActionTypes } from './actions'
 
-import smallCoffee from '../assets/images/smallCoffee.png'
-import mediumCoffee from '../assets/images/mediumCoffee.png'
-import largeCoffee from '../assets/images/largeCoffee.png'
+import smallCoffee from '../assets/images/coffee-sm.png'
+import mediumCoffee from '../assets/images/coffee-md.png'
+import largeCoffee from '../assets/images/coffee-lg.png'
 import chemex from '../assets/images/chemex.png'
 import frenchPress from '../assets/images/frenchPress.png'
 
@@ -77,7 +77,34 @@ const current = (state = currentInitState, action) => {
   }
 }
 
+const userInitState = {
+  id: '',
+  favoriteCafeIds: [],
+  favoriteRecipes: [],
+}
+
+const user = (state = userInitState, action) => {
+  switch (action.type) {
+    case ActionTypes.UPDATE_USER:
+      return action.payload.user
+
+    case ActionTypes.ADD_CAFE_TO_FAVORITES:
+      return {
+        favoriteCafeIds: [...state.favoriteCafeIds, action.payload.newCafeId],
+      }
+
+    case ActionTypes.ADD_RECIPE_TO_FAVORITES:
+      return {
+        favoriteRecipes: [...state.favoriteRecipes, action.payload.newRecipe],
+      }
+
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   settings,
   current,
+  user,
 })

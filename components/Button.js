@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity } from 'react-native'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Colors from '../constants/Colors'
 import { Text, StrongText } from './styled'
@@ -13,6 +13,7 @@ const StyledButton = styled.TouchableOpacity`
   height: 50px;
   padding-horizontal: 30px;
   background-color: ${Colors.black};
+  border-radius: 10px;
 `
 
 const OutlineButton = StyledButton.extend`

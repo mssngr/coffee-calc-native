@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
 import styled from 'styled-components'
 
-import caret from '../assets/images/caret-gray.png'
-import Colors from '../constants/Colors'
-import Selectors from '../state/selectors'
-import Actions from '../state/actions'
-import { HeaderAlt, Text } from '../components/styled'
-import Screen from '../components/Screen'
+import caret from 'assets/images/caret-gray.png'
+import Colors from 'constants/Colors'
+import Selectors from 'state/selectors'
+import Actions from 'state/actions'
+import { HeaderAlt, Text } from 'components/styled'
+import Screen from 'components/Screen'
 
 /* STYLES */
 const SlideContainer = styled.View`
@@ -119,6 +119,7 @@ class Size extends React.Component {
           onIndexChanged={this.handleSwipe}
           nextButton={nextArrow}
           prevButton={prevArrow}
+          loop={false}
           showsButtons
         >
           <Slide size={sizes.sm} />

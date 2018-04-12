@@ -63,12 +63,15 @@ class Screen extends React.Component {
     hasBack: PropTypes.bool,
     header: PropTypes.string,
     next: PropTypes.shape({
-      screen: PropTypes.string.isRequired,
+      screen: PropTypes.string,
+      onPress: PropTypes.func,
       text: PropTypes.string.isRequired,
     }),
     otherButton: PropTypes.shape({
-      screen: PropTypes.string.isRequired,
+      screen: PropTypes.string,
+      onPress: PropTypes.func,
       text: PropTypes.string.isRequired,
+      isNotOutline: PropTypes.bool,
     }),
     navigation: PropTypes.object,
     children: PropTypes.node.isRequired,
@@ -78,8 +81,13 @@ class Screen extends React.Component {
     this.props.navigation.goBack()
   }
 
-  handleNext = nextScreen => () => {
-    this.props.navigation.navigate(nextScreen)
+  handleNext = next => () => {
+    if (next.onPress) {
+      next.onPress()
+    }
+    if (next.screen) {
+      this.props.navigation.navigate(next.screen)
+    }
   }
 
   render() {
@@ -95,16 +103,13 @@ class Screen extends React.Component {
         <ButtonsContainer display-if={otherButton || next}>
           <ActionButton
             display-if={otherButton}
-            onPress={this.handleNext(otherButton && otherButton.screen)}
-            outline
+            onPress={this.handleNext(otherButton)}
+            outline={otherButton && !otherButton.isNotOutline}
           >
             {otherButton && otherButton.text}
           </ActionButton>
           <Spacer display-if={otherButton && next} />
-          <ActionButton
-            display-if={next}
-            onPress={this.handleNext(next && next.screen)}
-          >
+          <ActionButton display-if={next} onPress={this.handleNext(next)}>
             {next && next.text}
           </ActionButton>
         </ButtonsContainer>

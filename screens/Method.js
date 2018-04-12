@@ -112,6 +112,7 @@ class Method extends React.Component {
           onIndexChanged={this.handleSwipe}
           nextButton={nextArrow}
           prevButton={prevArrow}
+          loop={false}
           showsButtons
         >
           <Slide method={methods.pourOver} />
